@@ -10,7 +10,7 @@ import CreatePost from './CreatePost.jsx';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { Button } from './ui/button';
 import { setNotifications } from '@/redux/notificationSlice';
-import logo from './assets/logo.png';
+import logo from '../assets/logo.png';
 
 
 
