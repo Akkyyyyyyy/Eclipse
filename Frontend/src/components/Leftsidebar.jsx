@@ -67,7 +67,7 @@ function Leftsidebar() {
 
   const logoutHandler = async (req, res) => {
     try {
-      const res = await axios.get('https://eclipse0.onrender.com/api/v2/user/logout', { withCredentials: true });
+      const res = await axios.get(`${process.env.URL}api/v2/user/logout`, { withCredentials: true });
       if (res.data.success) {
         dispatch(setAuthUser(null));
         // dispatch(setPosts([]));

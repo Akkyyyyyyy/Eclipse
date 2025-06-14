@@ -73,7 +73,7 @@ const EditProfile = () => {
                 // If no new file is selected, send the existing profile picture URL
                 form.append('profilePicture', formData.profilePicture);
             }
-            await axios.post('https://eclipse0.onrender.com/api/v2/user/profile/edit', form, {
+            await axios.post(`${process.env.URL}api/v2/user/profile/edit`, form, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 },

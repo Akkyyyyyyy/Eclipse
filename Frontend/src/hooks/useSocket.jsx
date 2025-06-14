@@ -5,7 +5,7 @@ let socket;
 
 export const useSocket = () => {
   if (!socket && typeof window !== "undefined") {
-    socket = io("https://eclipse0.onrender.com"); // Initialize once
+    socket = io("${process.env.URL}"); // Initialize once
   }
   return socket;
 };
