@@ -1,17 +1,17 @@
-import React from 'react'
-import { Outlet } from 'react-router-dom'
-import Leftsidebar from './LeftSidebar'
+import React from 'react';
+import { Outlet } from 'react-router-dom';
+import Leftsidebar from './Leftsidebar.jsx';
 
 
 function MainPage() {
   return (
-    <div className=''>
+    <div>
       <Leftsidebar/>    
       <div>
         <Outlet/>
       </div>
     </div>
-  )
+  );
 }
 
-export default MainPage
+export default MainPage;
