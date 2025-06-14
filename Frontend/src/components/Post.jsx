@@ -11,7 +11,7 @@ import { MoreHorizontal } from "lucide-react";
 import { Button } from "./ui/button";
 import { FaBookmark, FaHeart, FaRegBookmark, FaRegCommentAlt, FaRegHeart, FaRegShareSquare } from "react-icons/fa";
 import { IoIosSend } from "react-icons/io";
-import CommentDialog from "./CommentDialog";
+import CommentDialog from "./CommentDialog.jsx";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";

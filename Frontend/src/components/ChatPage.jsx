@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { setSelectedUser } from '@/redux/authSlice';
-import Chat from './Chat';
-import NoChat from './NoChat';
+import Chat from './Chat.jsx';
+import NoChat from './NoChat.jsx';
 
 const ChatPage = () => {
     const { suggestedUser, selectedUser } = useSelector(store => store.auth);;

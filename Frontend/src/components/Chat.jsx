@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
-import Messages from './Messages';
+import Messages from './Messages.jsx';
 import axios from 'axios';
 // import { useSocket } from '@/hooks/useSocket';
 import { setMessages } from '@/redux/chatSlice';

@@ -1,5 +1,5 @@
 import React from 'react'
-import Post from './Post'
+import Post from './Post.jsx'
 import { useSelector } from 'react-redux'
 
 function Posts() {

@@ -6,7 +6,7 @@ import axios from 'axios';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuthUser } from '@/redux/authSlice';
-import CreatePost from './CreatePost';
+import CreatePost from './CreatePost.jsx';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { Button } from './ui/button';
 import { setNotifications } from '@/redux/notificationSlice';
