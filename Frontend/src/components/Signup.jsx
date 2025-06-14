@@ -32,7 +32,7 @@ function Signup() {
         console.log(input);
         try {
             setLoading(true);
-            const res = await axios.post(`${process.env.URL}api/v2/user/register`, input, {
+            const res = await axios.post(`${process.env.URL}/api/v2/user/register`, input, {
                 headers: {
                     'Content-Type': 'application/json'
                 },
