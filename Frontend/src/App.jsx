@@ -59,7 +59,7 @@ function App() {
   let socketio;
   useEffect(() => {
     if (user) {
-      socketio = io(`${process.env.URL}`, {
+      socketio = io('https://eclipse0.onrender.com', {
         query: {
           userId: user._id
         },
