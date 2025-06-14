@@ -63,7 +63,7 @@ function Signup() {
             >
                 <div className='text-center space-y-3'>
                     <div className='flex justify-center'>
-                        <img src="https://i.ibb.co/8gYfpmgP/logo.png" alt="logo" border="0" className='h-16 w-auto mix-blend-lighten' />
+                        <img src="https://i.ibb.co/8gYfpmgP/logo.png" alt="logo" border="0" className='w-48' />
 
                     </div>
                     <p className='text-gray-500 dark:text-gray-400'>
