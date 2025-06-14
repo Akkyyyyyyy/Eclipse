@@ -47,7 +47,7 @@ function Post({ post }) {
         e.preventDefault();
         try {
             //   setLoading(true);
-            const res = await axios.delete(`${process.env.URL}/api/v2/post/delete/${post?._id}`, {
+            const res = await axios.delete(`https://eclipse0.onrender.com/api/v2/post/delete/${post?._id}`, {
                 withCredentials: true
             });
             console.log(res.data);
@@ -66,7 +66,7 @@ function Post({ post }) {
     const likeOrDislikeHandler = async () => {
         try {
             const action = liked ? 'dislike' : 'like';
-            const res = await axios.get(`${process.env.URL}//api/v2/post/${post._id}/${action}`, {
+            const res = await axios.get(`https://eclipse0.onrender.com//api/v2/post/${post._id}/${action}`, {
                 withCredentials: true
             });
 
@@ -89,7 +89,7 @@ function Post({ post }) {
     }
     const commentHandler = async () => {
         try {
-            const res = await axios.post(`${process.env.URL}//api/v2/post/${post._id}/comment`, { text }, {
+            const res = await axios.post(`https://eclipse0.onrender.com//api/v2/post/${post._id}/comment`, { text }, {
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -116,7 +116,7 @@ function Post({ post }) {
     }
     const bookmarkHandler = async () => {
         try {
-            const res = await axios.get(`${process.env.URL}//api/v2/post/${post._id}/bookmark`, {
+            const res = await axios.get(`https://eclipse0.onrender.com//api/v2/post/${post._id}/bookmark`, {
                 withCredentials: true
             });
 

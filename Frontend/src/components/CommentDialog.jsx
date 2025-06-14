@@ -34,7 +34,7 @@ function CommentDialog({ open, setOpen }) {
   const sendMessageHandler = async() => {
     try {
       const res = await axios.post(
-        `${process.env.URL}/api/v2/post/${selectedPost?._id}/comment`, 
+        `https://eclipse0.onrender.com/api/v2/post/${selectedPost?._id}/comment`, 
         { text }, 
         {
           headers: { 'Content-Type': 'application/json' },

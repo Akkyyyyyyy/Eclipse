@@ -38,7 +38,7 @@ function Profile() {
     try {
       setIsLoading(true);
       const response = await axios.post(
-        `${process.env.URL}/api/v2/user/followorUnfollow/${userProfile?._id}`, 
+        `https://eclipse0.onrender.com/api/v2/user/followorUnfollow/${userProfile?._id}`, 
         {}, 
         {
           headers: {

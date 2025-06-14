@@ -41,7 +41,7 @@ const CreatePost=({open,setOpen})=> {
     
     try {
       setLoading(true);
-      const res = await axios.post(`${process.env.URL}/api/v2/post/addPost`, formData, {
+      const res = await axios.post(`https://eclipse0.onrender.com/api/v2/post/addPost`, formData, {
         headers:{ 
           'Content-Type': 'multipart/form-data',
         },
