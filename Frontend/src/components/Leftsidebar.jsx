@@ -10,10 +10,6 @@ import CreatePost from './CreatePost.jsx';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { Button } from './ui/button';
 import { setNotifications } from '@/redux/notificationSlice';
-import logo from '../assets/logo.png';
-
-
-
 
 
 
@@ -115,7 +111,7 @@ function Leftsidebar() {
         <div className='flex justify-center mb-8'>
           <Link to={'/'}>
           <img
-            src={logo}
+            src="/logo.png"
             alt="Logo"
             className='h-8 w-auto mix-blend-lighten'
           />
@@ -184,7 +180,7 @@ function Leftsidebar() {
 
         <div className='flex justify-center mb-8 mt-2'>
           <img
-            src={logo}
+            src="../src/assets/logo.png"
             alt="Logo"
             className='h-12 w-auto mix-blend-lighten'
           />
