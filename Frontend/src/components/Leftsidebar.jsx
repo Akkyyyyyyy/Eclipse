@@ -110,11 +110,7 @@ function Leftsidebar() {
       <div className="hidden md:flex fixed inset-y-0 left-0 z-30 flex-col h-screen p-4 w-64 border-r bg-white dark:bg-gray-900">
         <div className='flex justify-center mb-8'>
           <Link to={'/'}>
-          <img
-            src="/logo.png"
-            alt="Logo"
-            className='h-8 w-auto mix-blend-lighten'
-          />
+          <img src="https://i.ibb.co/8gYfpmgP/logo.png" alt="logo" border="0" />
           </Link>
         </div>
 
@@ -179,11 +175,7 @@ function Leftsidebar() {
         </button> */}
 
         <div className='flex justify-center mb-8 mt-2'>
-          <img
-            src="../src/assets/logo.png"
-            alt="Logo"
-            className='h-12 w-auto mix-blend-lighten'
-          />
+        <img src="https://i.ibb.co/8gYfpmgP/logo.png" alt="logo" border="0" />
         </div>
 
         <div className="space-y-2">

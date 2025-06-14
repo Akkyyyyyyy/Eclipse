@@ -69,11 +69,7 @@ function Login() {
             >
                 <div className='text-center space-y-3'>
                     <div className='flex justify-center'>
-                        <img
-                            src="..\src\assets\logo.jpg"
-                            alt="Logo"
-                            className='h-16 w-auto mix-blend-lighten'  // Adjust size as needed
-                        />
+                        <img src="https://i.ibb.co/8gYfpmgP/logo.png" alt="logo" border="0" />
                     </div>
                     <p className='text-gray-500 dark:text-gray-400'>
                         Welcome back to your account
