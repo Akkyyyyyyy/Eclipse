@@ -20,8 +20,8 @@ function Signup() {
     const navigate = useNavigate()
 
     useEffect(() => {
-            if (user) return navigate('/') 
-        }, [])
+        if (user) return navigate('/')
+    }, [])
 
     const changeEventHandler = (e) => {
         setInput({ ...input, [e.target.name]: e.target.value });
@@ -39,7 +39,7 @@ function Signup() {
                 withCredentials: true
             });
             if (res.data.success) {
-                navigate('/login') ;
+                navigate('/login');
                 toast.success(res.data.message);
                 setInput({
                     username: "",
@@ -63,11 +63,8 @@ function Signup() {
             >
                 <div className='text-center space-y-3'>
                     <div className='flex justify-center'>
-                        <img
-                            src="..\src\assets\logo.jpg"
-                            alt="Logo"
-                            className='h-16 w-auto mix-blend-lighten'  // Adjust size as needed
-                        />
+                        <img src="https://i.ibb.co/8gYfpmgP/logo.png" alt="logo" border="0" className='h-16 w-auto mix-blend-lighten' />
+
                     </div>
                     <p className='text-gray-500 dark:text-gray-400'>
                         Join our community today
