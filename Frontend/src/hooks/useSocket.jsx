@@ -5,7 +5,7 @@ let socket;
 
 export const useSocket = () => {
   if (!socket && typeof window !== "undefined") {
-    socket = io("http://localhost:8000"); // Initialize once
+    socket = io("https://eclipse0.onrender.com"); // Initialize once
   }
   return socket;
 };

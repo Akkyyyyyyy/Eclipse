@@ -17,7 +17,7 @@ const Chat = () => {
     const sendMessageHandler = async() => {
         if(!text.trim()) return;
         try {
-            const res = await axios.post(`http://localhost:8000/api/v2/message/send/${selectedUser?._id}`, {text: text},{
+            const res = await axios.post(`https://eclipse0.onrender.com/api/v2/message/send/${selectedUser?._id}`, {text: text},{
                 headers: {
                     "Content-Type": "application/json",
                     // "Authorization": `Bearer ${localStorage.getItem("token")}`

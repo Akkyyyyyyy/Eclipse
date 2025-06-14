@@ -26,7 +26,7 @@ const __dirname = path.resolve();
 // });
 // Configure CORS properly
 const corsOptions = {
-    origin: ['http://localhost:5173', 'http://192.168.131.4:5173/'],
+    origin: [process.env.URL, 'http://192.168.131.4:5173/'],
     credentials: true,
     optionsSuccessStatus: 200
   }
