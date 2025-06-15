@@ -25,18 +25,18 @@ const formatShortDate = (date) => {
 
 const Comment = ({ comment }) => {
   return (
-    <div key={comment._id} className="flex gap-3 p-3 hover:bg-gray-800/50 rounded-lg transition-colors">
+    <div key={comment?._id} className="flex gap-3 p-3 hover:bg-gray-800/50 rounded-lg transition-colors">
       <Link 
-        to={`/profile/${comment.author?.username}`}
+        to={`/profile/${comment?.author?.username}`}
         className="flex-shrink-0 hover:opacity-80 transition-opacity"
       >
         <Avatar className="w-9 h-9 border border-gray-600">
           <AvatarImage 
-            src={comment.author?.profilepicture} 
+            src={comment?.author?.profilepicture} 
             className="object-cover" 
           />
           <AvatarFallback className="bg-gray-600 text-white">
-            {comment.author?.username?.charAt(0).toUpperCase()}
+            {comment?.author?.username?.charAt(0).toUpperCase()}
           </AvatarFallback>
         </Avatar>
       </Link>
@@ -51,15 +51,15 @@ const Comment = ({ comment }) => {
               {comment.author?.username}
             </Link>
           </div>
-          {comment.createdAt && !isNaN(new Date(comment.createdAt)) && (
+          {comment?.createdAt && !isNaN(new Date(comment?.createdAt)) && (
             <span className="text-xs text-gray-400 whitespace-nowrap">
-              {formatShortDate(comment.createdAt)}
+              {formatShortDate(comment?.createdAt)}
             </span>
           )}
         </div>
         
         <p className="text-sm text-gray-100 mt-1 break-words">
-          {comment.text}
+          {comment?.text}
         </p>
         
         {/* <div className="flex gap-4 mt-2">

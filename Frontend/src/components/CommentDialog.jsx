@@ -255,7 +255,7 @@ function CommentDialog({ open, setOpen }) {
               {/* Likes */}
               <div className="text-sm font-semibold mb-1 text-white">{postLikes} likes</div>
 
-{selectedPost.createdAt && !isNaN(new Date(selectedPost?.createdAt)) && (
+{selectedPost?.createdAt && !isNaN(new Date(selectedPost?.createdAt)) && (
                               <span className="text-sm text-gray-400 whitespace-nowrap">
                                 {formatDate(selectedPost?.createdAt)}
                               </span>
