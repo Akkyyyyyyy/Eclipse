@@ -194,21 +194,21 @@ function Post({ post }) {
             <div className="flex items-center justify-between py-4 px-4">
                 <div className="flex items-center gap-2">
                     <Avatar className="w-9 h-9 border border-gray-600">
-                        <AvatarImage src={post.author?.profilepicture} className="w-full h-full object-cover" />
+                        <AvatarImage src={post?.author?.profilepicture} className="w-full h-full object-cover" />
                         <AvatarFallback className="bg-gray-600 text-white">
-                            {post.author?.username?.charAt(0).toUpperCase()}
+                            {post?.author?.username?.charAt(0).toUpperCase()}
                         </AvatarFallback>
                     </Avatar>
-                    <Link to={`/profile/${post.author?._id}`} className="font-semibold text-sm text-white">
-                        {post.author?.username}
+                    <Link to={`/profile/${post?.author?._id}`} className="font-semibold text-sm text-white">
+                        {post?.author?.username}
                     </Link>
-                    {user && user._id === post.author?._id && (
+                    {user && user._id === post?.author?._id && (
                         <Badge variant="outline">Owner</Badge>
                     )}
                     <div className="text-xs text-gray-400 mt-1">•</div>
-                    {post.createdAt && !isNaN(new Date(post.createdAt)) && (
+                    {post?.createdAt && !isNaN(new Date(post?.createdAt)) && (
                         <div className="text-xs text-gray-400 mt-1">
-                            {formatShortDate(post.createdAt)}
+                            {formatShortDate(post?.createdAt)}
                         </div>
                     )}
                 </div>
@@ -218,7 +218,7 @@ function Post({ post }) {
                         <MoreHorizontal className="cursor-pointer text-gray-300 hover:text-white" size={20} />
                     </DialogTrigger>
                     <DialogContent className="p-0 rounded-lg max-w-xs bg-gray-800 border-gray-700 text-center">
-                        {user && user._id !== post.author?._id && (
+                        {user && user._id !== post?.author?._id && (
                             <Button variant='ghost' className="w-full justify-start rounded-none py-3 text-[#ed4956] hover:bg-gray-700">
                                 Unfollow
                             </Button>
@@ -226,7 +226,7 @@ function Post({ post }) {
                         <Button variant='ghost' className="w-full justify-start rounded-none py-3 text-white hover:bg-gray-700">
                             Go to post
                         </Button>
-                        {user && user._id === post.author?._id && (
+                        {user && user._id === post?.author?._id && (
                             <Button onClick={deletePostHandler} variant='ghost' className="w-full justify-start rounded-none py-3 text-white hover:bg-gray-700">
                                 Delete
                             </Button>
@@ -237,7 +237,7 @@ function Post({ post }) {
 
             {/* Post Image */}
             <img
-                src={post.image}
+                src={post?.image}
                 className="w-full aspect-square object-cover rounded-lg"
                 alt="Post content"
             />
@@ -272,15 +272,15 @@ function Post({ post }) {
                 </div>
 
                 <div className="text-sm text-white">
-                    {post.caption && (
+                    {post?.caption && (
                         <>
-                            <span className="font-semibold mr-1">{post.author?.username}</span>
-                            {post.caption}
+                            <span className="font-semibold mr-1">{post?.author?.username}</span>
+                            {post?.caption}
                         </>
                     )}
                 </div>
 
-                {post.comments?.length > 0 && (
+                {post?.comments?.length > 0 && (
                     <button 
                         className="text-sm text-gray-400 hover:text-gray-300 mt-1 cursor-pointer" 
                         onClick={() => {
@@ -288,7 +288,7 @@ function Post({ post }) {
                             setOpen(true);
                         }}
                     >
-                        View all {post.comments.length} comments
+                        View all {post?.comments?.length} comments
                     </button>
                 )}
                 <CommentDialog open={open} setOpen={setOpen} commentHandler={commentHandler} />
