@@ -27,16 +27,16 @@ const Comment = ({ comment }) => {
   return (
     <div key={comment._id} className="flex gap-3 p-3 hover:bg-gray-800/50 rounded-lg transition-colors">
       <Link 
-        to={`/profile/${comment.author.username}`}
+        to={`/profile/${comment.author?.username}`}
         className="flex-shrink-0 hover:opacity-80 transition-opacity"
       >
         <Avatar className="w-9 h-9 border border-gray-600">
           <AvatarImage 
-            src={comment.author.profilepicture} 
+            src={comment.author?.profilepicture} 
             className="object-cover" 
           />
           <AvatarFallback className="bg-gray-600 text-white">
-            {comment.author.username.charAt(0).toUpperCase()}
+            {comment.author?.username?.charAt(0).toUpperCase()}
           </AvatarFallback>
         </Avatar>
       </Link>
@@ -45,10 +45,10 @@ const Comment = ({ comment }) => {
         <div className="flex items-baseline justify-between gap-2">
           <div className="flex items-center gap-2 overflow-hidden">
             <Link 
-              to={`/profile/${comment.author._id}`}
+              to={`/profile/${comment.author?.username}`}
               className="font-medium text-sm text-white hover:underline truncate"
             >
-              {comment.author.username}
+              {comment.author?.username}
             </Link>
           </div>
           {comment.createdAt && !isNaN(new Date(comment.createdAt)) && (

@@ -8,7 +8,7 @@ const useGetSuggestedUser = () => {
     useEffect(() => {
         const fetchSuggestedUser = async () => {
             try {
-                const res = await axios.get('https://eclipse0.onrender.com//api/v2/user/suggested', {
+                const res = await axios.get('https://eclipse0.onrender.com/api/v2/user/suggested', {
                     withCredentials: true
                 })
                 if (res.data.success) {

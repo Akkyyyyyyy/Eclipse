@@ -37,9 +37,9 @@ const Chat = () => {
 
     
     return (
-        <div className="bg-gray-900 h-screen flex flex-col">
+        <div className="bg-gray-900 h-screen flex flex-col w-full ">
             {/* Header - Sleeker sticky header */}
-            <div className='flex items-center p-4 sticky top-0 bg-gray-900 border-b border-gray-800 z-10'>
+            <div className='flex items-center p-4 sticky top-0 bg-gray-900 border-b border-gray-800 z-10 w-full'>
                 <div className='relative mr-3'>
                     <Avatar className='w-10 h-10 ring-3 ring-gray-800'>
                         <AvatarImage
@@ -71,7 +71,7 @@ const Chat = () => {
             </div>
 
             {/* Message Input - Modern input design */}
-            <div className='p-4 bg-gray-900 border-t border-gray-800'>
+            <div className='p-4 bg-gray-900 border-t border-gray-800 z-60'>
                 <div className='flex gap-2'>
                     <input
                         value={text}

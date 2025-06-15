@@ -9,9 +9,10 @@ const useGetUserProfile = (userId) => {
     useEffect(() => {
         const fetchUserProfile = async () => {
             try {
-                const res = await axios.get(`https://eclipse0.onrender.com//api/v2/user/${userId}/profile`, {
+                const res = await axios.get(`https://eclipse0.onrender.com/api/v2/user/${userId}/profile`, {
                     withCredentials: true
                 })
+                
                 if (res.data.success) {
                     // console.log(res.data);
                     // dispatch();

@@ -12,9 +12,10 @@ const chatSlice = createSlice({
         },
         setMessages: (state, action) => {
             state.messages = action.payload;
-        }
+        },
+        
     }
 });
 
-export const { setOnlineUsers, setMessages } = chatSlice.actions;
+export const { setOnlineUsers, setMessages, setIsChatOpen } = chatSlice.actions;
 export default chatSlice.reducer;

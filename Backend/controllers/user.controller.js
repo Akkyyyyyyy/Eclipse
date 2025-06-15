@@ -117,7 +117,26 @@ export const logout = async (_, res) => {
 export const getProfile = async (req, res) => {
   try {
     const userId = req.params.id;
-    let user = await User.findById(userId).populate({ path: 'posts', options: { sort: { createdAt: -1 } } }).populate('bookmarks');
+    let user = await User.findById(userId)
+      .populate({
+        path: 'posts',
+        options: { sort: { createdAt: -1 } },
+        populate: [
+          { 
+            path: 'author', 
+            select: 'username profilepicture' 
+          },
+          {
+            path: 'comments',
+            options: { sort: { createdAt: -1 } },
+            populate: {
+              path: 'author', 
+              select: 'username profilepicture'
+            }
+          }
+        ]
+      })
+      .populate('bookmarks');
 
     return res.status(200).json({
       user,
@@ -125,8 +144,12 @@ export const getProfile = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: 'Error fetching user profile'
+    });
   }
-}
+};
 
 export const editProfile = async (req, res) => {
   try {

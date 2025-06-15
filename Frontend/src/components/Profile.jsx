@@ -9,6 +9,8 @@ import { Button } from './ui/button'
 import { MessageCircle, PenLine, UserMinus, UserPlus } from 'lucide-react'
 import axios from 'axios'
 import { setAuthUser, setUserProfile } from '@/redux/authSlice'
+import CommentDialog from './CommentDialog'
+import { setSelectedPost } from '@/redux/postSlice'
 
 function Profile() {
   const params = useParams()
@@ -25,6 +27,10 @@ function Profile() {
 
   const [isFollowing, setIsFollowing] = useState(false); // Initialize as false
   const [isInitialized, setIsInitialized] = useState(false); // Track if initialized
+  const { selectedPost } = useSelector(store => store.post);
+  const [open, setOpen] = useState(false);
+  const [comment, setComment] = useState(selectedPost?.comments);
+
 
   // Update isFollowing when user or userProfile changes
   useEffect(() => {
@@ -38,8 +44,8 @@ function Profile() {
     try {
       setIsLoading(true);
       const response = await axios.post(
-        `https://eclipse0.onrender.com/api/v2/user/followorUnfollow/${userProfile?._id}`, 
-        {}, 
+        `https://eclipse0.onrender.com/api/v2/user/followorUnfollow/${userProfile?._id}`,
+        {},
         {
           headers: {
             'Content-Type': 'application/json'
@@ -51,7 +57,7 @@ function Profile() {
       if (response.data.success) {
         const newFollowingState = !isFollowing;
         setIsFollowing(newFollowingState);
-        
+
         // Update logged-in user's following list
         const updatedUser = { ...user };
         if (newFollowingState) {
@@ -76,7 +82,7 @@ function Profile() {
       setIsLoading(false);
     }
   };
-//nothin
+  //nothin
   return (
     <div className="container mx-auto sm:pl-20 md:pl-64 py-10 bg-white dark:bg-gray-900 min-h-screen">
       {/* Profile Header */}
@@ -109,7 +115,7 @@ function Profile() {
                 </Link>
               ) : (
                 <>
-                  <Button 
+                  <Button
                     onClick={handleFollow}
                     disabled={isLoading}
                     className="gap-2"
@@ -201,10 +207,13 @@ function Profile() {
           {userPosts?.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-1">
               {userPosts.map((post) => (
-                <div key={post?._id} className=" bg-gray-100 dark:bg-gray-700 overflow-hidden relative group">
+                <div key={post?._id} onClick={() => {
+                  dispatch(setSelectedPost(post));
+                  setOpen(true);
+                }} className=" bg-gray-100 dark:bg-gray-700 overflow-hidden relative group cursor-pointer">
                   <img
                     src={post?.image}
-                    className="aspect-square w-full h-full object-cover"
+                    className="aspect-square w-full h-full object-cover "
                     alt="Post"
                   />
 
@@ -256,7 +265,7 @@ function Profile() {
           {bookmarkedPosts ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-1">
               {bookmarkedPosts.map((post) => (
-                 <div key={post?._id} className=" bg-gray-100 dark:bg-gray-700 overflow-hidden relative group">
+                <div key={post?._id} className=" bg-gray-100 dark:bg-gray-700 overflow-hidden relative group">
                   <img
                     src={post?.image}
                     className="aspect-square w-full h-full object-cover"
@@ -317,6 +326,7 @@ function Profile() {
           </div>
         </TabsContent>
       </Tabs>
+      <CommentDialog open={open} setOpen={setOpen} />
     </div>
   )
 }
