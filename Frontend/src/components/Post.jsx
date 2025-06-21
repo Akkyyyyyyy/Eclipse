@@ -69,7 +69,7 @@ function Post({ post }) {
     const likeOrDislikeHandler = async () => {
         try {
             const action = liked ? 'dislike' : 'like';
-            const res = await axios.get(`http://localhost:8000/api/v2/post/${post._id}/${action}`, {
+            const res = await axios.get(`https://eclipse0.onrender.com/api/v2/post/${post._id}/${action}`, {
                 withCredentials: true
             });
 
@@ -91,7 +91,7 @@ function Post({ post }) {
 
     const commentHandler = async () => {
         try {
-            const res = await axios.post(`http://localhost:8000/api/v2/post/${post._id}/comment`,
+            const res = await axios.post(`https://eclipse0.onrender.com/api/v2/post/${post._id}/comment`,
                 { text },
                 {
                     headers: { 'Content-Type': 'application/json' },
@@ -120,7 +120,7 @@ function Post({ post }) {
 
     const bookmarkHandler = async () => {
         try {
-            const res = await axios.get(`http://localhost:8000/api/v2/post/${post._id}/bookmark`, {
+            const res = await axios.get(`https://eclipse0.onrender.com/api/v2/post/${post._id}/bookmark`, {
                 withCredentials: true
             });
 
