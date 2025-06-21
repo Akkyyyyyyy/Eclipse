@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { toast } from 'sonner';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { setAuthUser, setUserProfile } from '@/redux/authSlice'; // or wherever your Redux actions are
+import { setAuthUser, setUserProfile } from '@/redux/authSlice';
 import { readFileAsDataURL } from '@/lib/utils';
 
 const EditProfile = () => {
@@ -50,7 +50,7 @@ const EditProfile = () => {
             setPreviewImage(dataUrl);
             setFormData(prevData => ({
                 ...prevData,
-                profilePicture: dataUrl  // Replace with your new value
+                profilePicture: dataUrl
             }));
 
         };
@@ -69,8 +69,7 @@ const EditProfile = () => {
             form.append('gender', formData.gender);
             if (file) {
                 form.append('profilePicture', file);
-            }else {
-                // If no new file is selected, send the existing profile picture URL
+            } else {
                 form.append('profilePicture', formData.profilePicture);
             }
             await axios.post(`https://eclipse0.onrender.com/api/v2/user/profile/edit`, form, {
@@ -103,7 +102,6 @@ const EditProfile = () => {
                 <h1 className="text-2xl font-bold dark:text-white mb-6">Edit Profile</h1>
 
                 <form onSubmit={handleSubmit}>
-                    {/* Profile Picture Section */}
                     <div className="mb-8">
                         <div className="flex items-center gap-6">
                             <div className="relative group">
@@ -147,7 +145,6 @@ const EditProfile = () => {
                         </div>
                     </div>
 
-                    {/* Bio Field */}
                     <div className="mb-6">
                         <Label htmlFor="bio" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             Title
@@ -162,7 +159,6 @@ const EditProfile = () => {
                         />
                     </div>
 
-                    {/* Gender Field */}
                     <div className="mb-8">
                         <Label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             Gender
@@ -183,7 +179,6 @@ const EditProfile = () => {
                         </Select>
                     </div>
 
-                    {/* Submit Button */}
                     <div className="flex justify-end gap-4">
                         <Button
                             type="button"

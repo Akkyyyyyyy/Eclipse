@@ -6,7 +6,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: [process.env.URL], // Allow connections from any origin that matches the pattern
+        origin: ['https://eclipse0.onrender.com'], // Allow connections from any origin that matches the pattern
         methods: ["GET", "POST"],
         credentials: true
     }

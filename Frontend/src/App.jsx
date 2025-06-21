@@ -16,6 +16,7 @@ import { setMessages } from './redux/chatSlice';
 // import { setNotifications } from './redux/notificationSlice';
 import ProtectedRoutes from './components/ProtectedRoutes';
 import { setNotifications, clearNotifications } from './redux/notificationSlice';
+import { setSocket } from './redux/socketSlice';
 
 function App() {
 
@@ -38,7 +39,7 @@ function App() {
         },
         {
           path: '/chat',
-          element:<ProtectedRoutes> <ChatPage /></ProtectedRoutes>
+          element: <ProtectedRoutes> <ChatPage /></ProtectedRoutes>
         }
       ]
     },
@@ -56,10 +57,11 @@ function App() {
   const { socket } = useSelector(store => store.socket);
   // const socket = useSocket();
   const dispatch = useDispatch();
-  let socketio;
+
   useEffect(() => {
+    
     if (user) {
-      socketio = io('https://eclipse0.onrender.com', {
+      const socketio = io('https://eclipse0.onrender.com', {
         query: {
           userId: user._id
         },
@@ -68,6 +70,8 @@ function App() {
       // dispatch(setSocket(socketio));
       socketio.on('getOnlineUsers', (onlineUsers) => {
         dispatch(setOnlineUsers(onlineUsers));
+        console.log("+1");
+        
       });
       socketio.on('newMessage', (message) => {
         console.log('New message received!', message);
@@ -79,11 +83,13 @@ function App() {
         dispatch(clearNotifications());
       });
       return () => {
-        // socketio.close();
-        // dispatch(setSocket(null));
+        socketio.close();
+        dispatch(setSocket(null));
       }
-    } else if (socket) {
-      socket.close();
+    } else if (!user) {
+      socket?.close();
+      dispatch(setSocket(null));
+
     }
   }, [user, dispatch, messages]);
   return (

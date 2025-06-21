@@ -6,9 +6,9 @@ import Leftsidebar from './Leftsidebar.jsx';
 function MainPage() {
   return (
     <div>
-      <Leftsidebar/>    
+      <Leftsidebar />
       <div>
-        <Outlet/>
+        <Outlet />
       </div>
     </div>
   );

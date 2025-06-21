@@ -41,30 +41,43 @@ export const addNewPost = async (req, res) => {
     } catch (error) {
         console.log(error);
     }
-}
+};
 export const getAllPost = async (req, res) => {
     try {
-        const posts = await Post.find().sort({ createdAt: -1 })
+        const userId = req.id; 
+        const user = await User.findById(userId).select('following');
+        const followingIds = user.following.map(follow => follow);
+        
+        const allowedUserIds = [...followingIds, userId];
+        
+
+        const posts = await Post.find({ author: { $in: allowedUserIds } })
+            .sort({ createdAt: -1 })
             .populate({ 
                 path: 'author', 
                 select: 'username profilepicture' 
             })
             .populate({
                 path: 'comments',
-                options: { sort: { createdAt: -1 } },  // This is where you specify sort for comments
+                options: { sort: { createdAt: -1 } },
                 populate: {
                     path: 'author', 
                     select: 'username profilepicture'
                 }
             });
+            
         return res.status(200).json({
             posts,
             success: true,
         });
     } catch (error) {
         console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: 'Error fetching posts'
+        });
     }
-}
+};
 export const getUserPost = async (req, res) => {
     try {
         const authorId = req.id;
@@ -240,7 +253,6 @@ export const deletePost = async (req, res) => {
             });
         }
 
-        //checking if loggedin user is the owner of the post
         if (post.author.toString() != authorId) {
             return res.status(403).json({
                 message: "Unauthorized"
@@ -249,7 +261,6 @@ export const deletePost = async (req, res) => {
 
         await Post.findByIdAndDelete(postId);
 
-        //removing post from user's posts
         let user = await User.findById(authorId);
         user.posts = user.posts.filter(id => id?.toString() !== postId);
         await user.save();

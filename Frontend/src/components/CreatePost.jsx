@@ -82,7 +82,7 @@ const CreatePost=({open,setOpen})=> {
         <Avatar className="h-10 w-10">
           <AvatarImage src={user?.profilePicture} alt="Profile"  className="w-full h-full object-cover"/>
           <AvatarFallback className="bg-gray-600 text-white">
-                      {user?.username.charAt(0).toUpperCase()}
+                      {user?.username?.charAt(0).toUpperCase()}
                     </AvatarFallback>
         </Avatar>
         <div>
@@ -90,13 +90,11 @@ const CreatePost=({open,setOpen})=> {
              {user?.username}
             </h1>
           <span className="text-gray-500 dark:text-gray-400 text-xs">
-            {/* {user?.bio || "Share your thoughts"} */}
-            {user?.bio}
+            {user?.bio || "Share your thoughts"}
           </span>
         </div>
       </div>
 
-      {/* Caption */}
       <Textarea
         value={caption}
         onChange={(e) => setCaption(e.target.value)}
@@ -104,7 +102,6 @@ const CreatePost=({open,setOpen})=> {
         placeholder="What's on your mind?"
       />
 
-      {/* Image Preview - Now with constrained dimensions */}
       {imagePreview && (
         <div className="relative w-full max-h-[400px] rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 flex justify-center bg-gray-100 dark:bg-gray-800">
           <img 
@@ -120,7 +117,6 @@ const CreatePost=({open,setOpen})=> {
         </div>
       )}
 
-      {/* File Input (hidden) */}
       <input 
         ref={imageRef} 
         type="file" 
@@ -129,7 +125,6 @@ const CreatePost=({open,setOpen})=> {
         onChange={fileChangeHandler}
       />
 
-      {/* Action Buttons - Sticky bottom */}
       <div className="sticky bottom-0 bg-white dark:bg-gray-900 pt-4 pb-2">
         <div className="flex flex-col gap-2">
           {!imagePreview ? (

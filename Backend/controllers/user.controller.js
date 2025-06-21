@@ -234,10 +234,8 @@ export const followOrUnfollow = async (req, res) => {
       });
     }
 
-    //checking :do follow or unfollow
     const isFollowing = user.following.includes(other);
     if (isFollowing) {
-      //unfollow
       await Promise.all([
         User.updateOne({ _id: follow }, { $pull: { following: other } }),
         User.updateOne({ _id: other }, { $pull: { followers: follow } })
@@ -248,7 +246,6 @@ export const followOrUnfollow = async (req, res) => {
       });
     }
     else {
-      //follow
       await Promise.all([
         User.updateOne({ _id: follow }, { $push: { following: other } }),
         User.updateOne({ _id: other }, { $push: { followers: follow } })

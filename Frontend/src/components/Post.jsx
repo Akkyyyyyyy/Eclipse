@@ -21,19 +21,21 @@ import { toast } from "sonner";
 import { setPosts, setSelectedPost } from '@/redux/postSlice';
 import { formatDistanceToNow } from 'date-fns/formatDistanceToNow';
 import { Badge } from "./ui/badge";
+import { setAuthUser } from "@/redux/authSlice";
 
 function Post({ post }) {
     const [text, setText] = useState('');
     const [open, setOpen] = useState(false);
-    const { user } = useSelector(store => store.auth);
+    const { user, userProfile } = useSelector(store => store.auth);
     const { posts } = useSelector(store => store.post);
     const [liked, setLiked] = useState(post?.likes?.includes(user?._id) || false);
     const [postLikes, setPostLikes] = useState(post?.likes?.length || 0);
     const [comment, setComment] = useState(post?.comments || []);
     const [isLoading, setIsLoading] = useState(true);
     const dispatch = useDispatch();
+    const [isBookmarked, setIsBookmarked] = useState(user?.bookmarks?.map(bk => bk._id).includes(post._id) || false);
 
-    // Simulate loading delay (minimum 500ms)
+
     useEffect(() => {
         const timer = setTimeout(() => {
             setIsLoading(false);
@@ -67,7 +69,7 @@ function Post({ post }) {
     const likeOrDislikeHandler = async () => {
         try {
             const action = liked ? 'dislike' : 'like';
-            const res = await axios.get(`https://eclipse0.onrender.com/api/v2/post/${post._id}/${action}`, {
+            const res = await axios.get(`http://localhost:8000/api/v2/post/${post._id}/${action}`, {
                 withCredentials: true
             });
 
@@ -89,8 +91,8 @@ function Post({ post }) {
 
     const commentHandler = async () => {
         try {
-            const res = await axios.post(`https://eclipse0.onrender.com/api/v2/post/${post._id}/comment`, 
-                { text }, 
+            const res = await axios.post(`http://localhost:8000/api/v2/post/${post._id}/comment`,
+                { text },
                 {
                     headers: { 'Content-Type': 'application/json' },
                     withCredentials: true
@@ -118,28 +120,37 @@ function Post({ post }) {
 
     const bookmarkHandler = async () => {
         try {
-            const res = await axios.get(`https://eclipse0.onrender.com/api/v2/post/${post._id}/bookmark`, {
+            const res = await axios.get(`http://localhost:8000/api/v2/post/${post._id}/bookmark`, {
                 withCredentials: true
             });
 
             if (res.data.success) {
                 toast.success(res.data.message);
-                const updatedPostData = posts.map(
-                    (p) => p._id === post._id ? {
-                        ...p,
-                        bookmarks: res.data.type === 'saved' ? [...p.bookmarks, user._id] : p.bookmarks.filter((id) => id !== user._id)
-                    } : p
-                );
-                dispatch(setPosts(updatedPostData));
+                setIsBookmarked(!isBookmarked);
+
+                let updatedBookmarks;
+
+
+                if (isBookmarked == true) {
+                    updatedBookmarks = user.bookmarks.includes(post._id)
+                        ? user.bookmarks : [...user.bookmarks, post._id];
+                    console.log(updatedBookmarks);
+
+                }
+                else {
+                    updatedBookmarks = user.bookmarks.filter(id => id !== post._id);
+                }
+                dispatch(setAuthUser({ ...user, bookmarks: updatedBookmarks }));
             }
         } catch (error) {
-            toast.error(error.response?.data?.message || "Failed to update bookmark");
+            console.log(error);
+
         }
     }
 
     const formatShortDate = (date) => {
         if (!date || isNaN(new Date(date))) return '';
-        const distance = formatDistanceToNow(new Date(date), { 
+        const distance = formatDistanceToNow(new Date(date), {
             addSuffix: false,
             includeSeconds: true
         });
@@ -159,18 +170,15 @@ function Post({ post }) {
     if (isLoading) {
         return (
             <div className="border-b border-gray-700 bg-white dark:bg-gray-900 max-w-lg mx-auto p-4">
-                {/* Skeleton for header */}
                 <div className="flex items-center justify-between mb-4 text">
                     <div className="flex items-center gap-2">
                         <Skeleton className="h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-800" />
                         <Skeleton className="h-4 w-60 bg-gray-200 dark:bg-gray-800" />
                     </div>
                 </div>
-                
-                {/* Skeleton for image */}
+
                 <Skeleton className="w-(80%) md:w-lg aspect-square rounded-lg mb-4 bg-gray-200 dark:bg-gray-800" />
-                
-                {/* Skeleton for actions */}
+
                 <div className="flex justify-between mb-3">
                     <div className="flex gap-4">
                         <Skeleton className="h-6 w-6 rounded-full bg-gray-200 dark:bg-gray-800" />
@@ -179,8 +187,7 @@ function Post({ post }) {
                     </div>
                     <Skeleton className="h-6 w-6 rounded-full bg-gray-200 dark:bg-gray-800" />
                 </div>
-                
-                {/* Skeleton for likes and caption */}
+
                 <Skeleton className="h-4 w-16 mb-2 bg-gray-200 dark:bg-gray-800" />
                 <Skeleton className="h-4 w-full mb-1 bg-gray-200 dark:bg-gray-800" />
                 <Skeleton className="h-4 w-3/4 bg-gray-200 dark:bg-gray-800" />
@@ -190,7 +197,6 @@ function Post({ post }) {
 
     return (
         <div className="border-b border-gray-700 bg-white dark:bg-gray-900 max-w-lg mx-auto">
-            {/* Post Header */}
             <div className="flex items-center justify-between py-4 px-4">
                 <div className="flex items-center gap-2">
                     <Avatar className="w-9 h-9 border border-gray-600">
@@ -235,22 +241,20 @@ function Post({ post }) {
                 </Dialog>
             </div>
 
-            {/* Post Image */}
             <img
                 src={post?.image}
                 className="w-full aspect-square object-cover rounded-lg"
                 alt="Post content"
             />
 
-            {/* Post Actions */}
             <div className="pt-4 px-4">
                 <div className="flex justify-between items-center mb-2">
                     <div className="flex gap-4">
                         <button onClick={likeOrDislikeHandler} className="text-2xl text-white hover:text-gray-300 cursor-pointer">
                             {liked ? <FaHeart className="text-red-500" /> : <FaRegHeart />}
                         </button>
-                        <button 
-                            className="text-2xl text-white hover:text-gray-300 cursor-pointer" 
+                        <button
+                            className="text-2xl text-white hover:text-gray-300 cursor-pointer"
                             onClick={() => {
                                 dispatch(setSelectedPost(post));
                                 setOpen(true);
@@ -263,7 +267,10 @@ function Post({ post }) {
                         </button>
                     </div>
                     <button onClick={bookmarkHandler} className="text-2xl text-white hover:text-gray-300">
-                        <FaRegBookmark />
+                        {
+                            // isBookmarked ? <FaBookmark/> : <FaRegBookmark/>
+                            <FaRegBookmark />
+                        }
                     </button>
                 </div>
 
@@ -281,8 +288,8 @@ function Post({ post }) {
                 </div>
 
                 {post?.comments?.length > 0 && (
-                    <button 
-                        className="text-sm text-gray-400 hover:text-gray-300 mt-1 cursor-pointer" 
+                    <button
+                        className="text-sm text-gray-400 hover:text-gray-300 mt-1 cursor-pointer"
                         onClick={() => {
                             dispatch(setSelectedPost(post));
                             setOpen(true);
@@ -304,8 +311,8 @@ function Post({ post }) {
                     className="flex-1 text-sm outline-none bg-transparent text-white placeholder-gray-400"
                 />
                 {text && (
-                    <button 
-                        onClick={commentHandler} 
+                    <button
+                        onClick={commentHandler}
                         className="text-blue-400 font-semibold text-sm hover:text-blue-300"
                     >
                         Post

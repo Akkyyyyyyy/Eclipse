@@ -72,7 +72,6 @@ function Signup() {
                 </div>
 
                 <div className='space-y-6'>
-                    {/* Username Field */}
                     <div className="relative h-14">
                         <Input
                             type="text"
@@ -93,7 +92,6 @@ function Signup() {
                         </Label>
                     </div>
 
-                    {/* Email Field */}
                     <div className="relative h-14">
                         <Input
                             type="email"
@@ -114,7 +112,6 @@ function Signup() {
                         </Label>
                     </div>
 
-                    {/* Password Field */}
                     <div className="relative h-14">
                         <Input
                             type="password"

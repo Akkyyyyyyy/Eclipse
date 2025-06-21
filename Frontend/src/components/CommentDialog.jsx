@@ -21,6 +21,8 @@ function CommentDialog({ open, setOpen }) {
   const [localComments, setLocalComments] = useState([]);
   const [liked, setLiked] = useState(false);
   const [postLikes, setPostLikes] = useState(0);
+  const [comment, setComment] = useState(selectedPost?.comments || []);
+
 
   useEffect(() => {
     setLocalComments(selectedPost?.comments || []);
@@ -40,7 +42,7 @@ function CommentDialog({ open, setOpen }) {
   // const sendMessageHandler = async () => {
   //   try {
   //     const res = await axios.post(
-  //       `https://eclipse0.onrender.com/api/v2/post/${selectedPost?._id}/comment`,
+  //       `http://localhost:8000/api/v2/post/${selectedPost?._id}/comment`,
   //       { text },
   //       {
   //         headers: { 'Content-Type': 'application/json' },
@@ -76,7 +78,7 @@ function CommentDialog({ open, setOpen }) {
       const res = await axios.get(`https://eclipse0.onrender.com/api/v2/post/${selectedPost._id}/${action}`, {
         withCredentials: true
       });
-    console.log("here");
+      console.log("here");
 
       if (res.data.success) {
         const updatedLikes = liked ? postLikes - 1 : postLikes + 1;
@@ -106,6 +108,9 @@ function CommentDialog({ open, setOpen }) {
 
       if (res.data.success) {
         toast.success(res.data.message);
+
+        setLocalComments(prev => [res.data.comment, ...prev])
+
         const updatedCommentData = [res.data.comment, ...comment];
         setComment(updatedCommentData);
 
@@ -124,46 +129,54 @@ function CommentDialog({ open, setOpen }) {
   }
   const bookmarkHandler = async () => {
     try {
-      const res = await axios.get(`https://eclipse0.onrender.com/api/v2/post/${selectedPost._id}/bookmark`, {
+      const res = await axios.get(`https://eclipse0.onrender.com/api/v2/post/${post._id}/bookmark`, {
         withCredentials: true
       });
 
       if (res.data.success) {
-        // setBookmark(!bookmark);
         toast.success(res.data.message);
+        setIsBookmarked(!isBookmarked);
 
-        const updatedPostData = posts.map(
-          (p) => p._id === selectedPost._id ? {
-            ...p,
-            bookmarks: res.data.type === 'saved' ? [...p.bookmarks, user._id] : p.bookmarks.filter((id) => id !== user._id)
-          } : p
-        );
-        dispatch(setPosts(updatedPostData));
+        let updatedBookmarks;
+
+
+        if (isBookmarked == true) {
+          updatedBookmarks = user.bookmarks.includes(post._id)
+            ? user.bookmarks : [...user.bookmarks, post._id];
+          console.log(updatedBookmarks);
+
+        }
+        else {
+          updatedBookmarks = user.bookmarks.filter(id => id !== post._id);
+        }
+        dispatch(setAuthUser({ ...user, bookmarks: updatedBookmarks }));
       }
     } catch (error) {
       console.log(error);
+
     }
   }
+
   const formatDate = (date) => {
-  if (!date || isNaN(new Date(date))) return ''
+    if (!date || isNaN(new Date(date))) return ''
 
-  const distance = formatDistanceToNow(new Date(date), { 
-    addSuffix: true,
-    includeSeconds: true
-  })
+    const distance = formatDistanceToNow(new Date(date), {
+      addSuffix: true,
+      includeSeconds: true
+    })
 
-  if (distance.includes('less than') || distance.includes('seconds') || distance.includes('half')) {
-    return 'just now'
+    if (distance.includes('less than') || distance.includes('seconds') || distance.includes('half')) {
+      return 'just now'
+    }
+
+    // const cleanDistance = distance.replace(/^about /, '')
+    // const parts = cleanDistance.split(' ')
+    // const value = parts[0]
+    // const unit = parts[1][0]
+
+    // return `${value}${unit}`
+    return distance
   }
-
-  // const cleanDistance = distance.replace(/^about /, '')
-  // const parts = cleanDistance.split(' ')
-  // const value = parts[0]
-  // const unit = parts[1][0]
-
-  // return `${value}${unit}`
-  return distance
-}
   return (
     <Dialog open={open}>
       <DialogContent onInteractOutside={() => setOpen(false)} className='min-w-2xl p-0 flex flex-col bg-gray-900'>
@@ -180,30 +193,30 @@ function CommentDialog({ open, setOpen }) {
                     <AvatarFallback className="bg-gray-600 text-white">
                       {selectedPost?.author?.username?.charAt(0).toUpperCase()}
                     </AvatarFallback>
-                    
+
                   </Avatar>
                 </Link>
                 <div>
                   <div className="text-sm text-white">
-                {selectedPost?.author?.username && (
-                  <>     <div className="flex-1 min-w-0">
-                          <div className="flex items-baseline justify-between gap-2">
-                            <div className="flex items-center gap-2 overflow-hidden">
-                              <Link 
-                                to={`/profile/${selectedPost?.username}`}
-                                className="font-medium text-sm text-white hover:underline truncate"
-                              >
-                                {selectedPost?.author?.username}
-                              </Link>
-                            </div>
-                            
+                    {selectedPost?.author?.username && (
+                      <>     <div className="flex-1 min-w-0">
+                        <div className="flex items-baseline justify-between gap-2">
+                          <div className="flex items-center gap-2 overflow-hidden">
+                            <Link
+                              to={`/profile/${selectedPost?.username}`}
+                              className="font-medium text-sm text-white hover:underline truncate"
+                            >
+                              {selectedPost?.author?.username}
+                            </Link>
                           </div>
-                          
-                          <p className="text-sm text-gray-100 mt-1 break-words">
-                            {selectedPost?.caption}
-                          </p>
-                          
-                          {/* <div className="flex gap-4 mt-2">
+
+                        </div>
+
+                        <p className="text-sm text-gray-100 mt-1 break-words">
+                          {selectedPost?.caption}
+                        </p>
+
+                        {/* <div className="flex gap-4 mt-2">
                             <button className="text-xs text-gray-400 hover:text-white transition-colors">
                               Like
                             </button>
@@ -211,21 +224,21 @@ function CommentDialog({ open, setOpen }) {
                               Reply
                             </button>
                           </div> */}
-                        </div>
-                    {/* <Link className="font-semibold text-sm text-white"><span className="font-semibold mr-1">{selectedPost.author?.username}</span></Link>
+                      </div>
+                        {/* <Link className="font-semibold text-sm text-white"><span className="font-semibold mr-1">{selectedPost.author?.username}</span></Link>
                     <p className="text-sm text-gray-100 mt-1 break-words">{selectedPost.caption}</p> */}
-                  </>
-                )}
-              </div>
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
-              
+
             </div>
             <hr />
             <div className='flex-1 overflow-y-auto max-h-64 p-4 scrollbar-hide bg-gray-900'>
               {localComments.length > 0 ? localComments.map((comment) => (
                 <Comment key={comment._id} comment={comment} />
-              )):(
+              )) : (
                 <div className="text-center text-sm  text-gray-500">
                   No comments yet. Be the first to comment!
                 </div>
@@ -240,7 +253,7 @@ function CommentDialog({ open, setOpen }) {
                       liked ? <FaHeart className="text-red-500 " /> : <FaRegHeart />
                     }
                   </button>
-                  <button className="text-2xl text-white hover:text-gray-300 cursor-pointer"  >               
+                  <button className="text-2xl text-white hover:text-gray-300 cursor-pointer"  >
                     <FaRegCommentAlt />
                   </button>
                   <button className="text-2xl text-white hover:text-gray-300">
@@ -252,37 +265,33 @@ function CommentDialog({ open, setOpen }) {
                 </button>
               </div>
 
-              {/* Likes */}
               <div className="text-sm font-semibold mb-1 text-white">{postLikes} likes</div>
 
-{selectedPost?.createdAt && !isNaN(new Date(selectedPost?.createdAt)) && (
-                              <span className="text-sm text-gray-400 whitespace-nowrap">
-                                {formatDate(selectedPost?.createdAt)}
-                              </span>
-                            )}
-              {/* Caption */}
-              
-<div className=" pt-3 flex items-center">
-              <input
-                type="text"
-                placeholder="Add a comment..."
-                value={text}
-                onChange={changeEventHandler}
-                className="flex-1 text-sm outline-none bg-transparent text-white placeholder-gray-400"
-              />
-              {
-                text && <button onClick={commentHandler} className="text-blue-400 font-semibold text-sm hover:text-blue-300">Post</button>
-              }
+              {selectedPost?.createdAt && !isNaN(new Date(selectedPost?.createdAt)) && (
+                <span className="text-sm text-gray-400 whitespace-nowrap">
+                  {formatDate(selectedPost?.createdAt)}
+                </span>
+              )}
 
-            </div>
-              {/* Comments */}
-             
+              <div className=" pt-3 flex items-center">
+                <input
+                  type="text"
+                  placeholder="Add a comment..."
+                  value={text}
+                  onChange={changeEventHandler}
+                  className="flex-1 text-sm outline-none bg-transparent text-white placeholder-gray-400"
+                />
+                {
+                  text && <button onClick={commentHandler} className="text-blue-400 font-semibold text-sm hover:text-blue-300">Post</button>
+                }
+
+              </div>
+
               {/* <CommentDialog open={open} setOpen={setOpen}  commentHandler={commentHandler}/> */}
 
             </div>
 
-            {/* Add comment */}
-            
+
             {/* <div className='p-4'>
               <div className='flex items-center gap-2'>
                 <input type="text" placeholder='Add a Comment' value={text} onChange={changeEventHandler}className='w-full outline-none border border-gray-800 p-2 rounded'/>

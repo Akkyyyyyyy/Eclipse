@@ -19,11 +19,9 @@ function Login() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-    // Redirect if already logged in
     useEffect(() => {
         if (user) navigate('/')
-    }, [user, navigate]) // Added dependencies
-
+    }, [user, navigate]) 
     const handleInputChange = (e) => {
         const { name, value } = e.target
         setInput(prev => ({
@@ -35,7 +33,6 @@ function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         
-        // Basic validation
         if (!input.email || !input.password) {
             toast.error('Please fill in all fields')
             return
@@ -56,7 +53,6 @@ function Login() {
                 dispatch(setAuthUser(response.data.user))
                 toast.success(response.data.message)
                 navigate('/')
-                // Reset form
                 setInput({
                     email: "",
                     password: ""
@@ -92,7 +88,6 @@ function Login() {
                 </div>
 
                 <div className='space-y-6 w-full'>
-                    {/* Email Field */}
                     <div className="relative h-18 md:h-14">
                         <Input
                             type="email"
@@ -120,7 +115,6 @@ function Login() {
                         </Label>
                     </div>
 
-                    {/* Password Field */}
                     <div className="relative h-18 md:h-14">
                         <Input
                             type="password"

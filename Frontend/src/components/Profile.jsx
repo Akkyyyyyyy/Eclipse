@@ -25,14 +25,12 @@ function Profile() {
   const bookmarkedPosts = userProfile?.bookmarks;
   const [isLoading, setIsLoading] = useState(false);
 
-  const [isFollowing, setIsFollowing] = useState(false); // Initialize as false
-  const [isInitialized, setIsInitialized] = useState(false); // Track if initialized
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
   const { selectedPost } = useSelector(store => store.post);
   const [open, setOpen] = useState(false);
   const [comment, setComment] = useState(selectedPost?.comments);
 
-
-  // Update isFollowing when user or userProfile changes
   useEffect(() => {
     if (user && userProfile) {
       setIsFollowing(user?.following?.includes(userProfile?._id));
@@ -58,7 +56,6 @@ function Profile() {
         const newFollowingState = !isFollowing;
         setIsFollowing(newFollowingState);
 
-        // Update logged-in user's following list
         const updatedUser = { ...user };
         if (newFollowingState) {
           updatedUser.following = [...(updatedUser.following || []), userProfile?._id];
@@ -67,7 +64,6 @@ function Profile() {
         }
         dispatch(setAuthUser(updatedUser));
 
-        // Update profile user's followers list
         const updatedUserProfile = { ...userProfile };
         if (newFollowingState) {
           updatedUserProfile.followers = [...(updatedUserProfile.followers || []), user?._id];
@@ -82,13 +78,11 @@ function Profile() {
       setIsLoading(false);
     }
   };
-  //nothin
   return (
     <div className="container mx-auto sm:pl-20 md:pl-64 py-10 bg-white dark:bg-gray-900 min-h-screen">
-      {/* Profile Header */}
-      <div className="flex flex-col md:flex-row items-center md:items-start gap-8 mb-12 px-12">
+      <div className="flex flex-row items-start gap-8 mb-12 px-4 md:px-12">
         <div className="relative group">
-          <Avatar className="h-32 w-32 md:h-40 md:w-40 border-4 border-gray-200 dark:border-gray-700 transition-all duration-300 group-hover:border-blue-500">
+          <Avatar className="h-24 w-24 md:h-40 md:w-40 border-4 border-gray-200 dark:border-gray-700 transition-all duration-300 group-hover:border-blue-500">
             <AvatarImage
               src={userProfile?.profilepicture}
               className="w-full h-full object-cover"
@@ -99,7 +93,7 @@ function Profile() {
           </Avatar>
         </div>
 
-        <div className="flex-1 space-y-4 text-center md:text-left">
+        <div className="flex-1 space-y-4 text-left">
           <div className="space-y-2">
             <h1 className="text-3xl font-bold dark:text-white tracking-tight">{userProfile?.username}</h1>
             <p className="text-gray-600 dark:text-gray-400 max-w-lg">
@@ -144,15 +138,15 @@ function Profile() {
 
           <div className="flex w-full py-2">
             <div className="flex flex-1 justify-between max-w-xs mx-auto md:mx-0 md:max-w-1/2 md:justify-start md:gap-12">
-              <div className="flex flex-col items-center md:items-start flex-1 min-w-0">
+              <div className="flex flex-col items-start flex-1 min-w-0">
                 <span className="font-bold text-lg dark:text-white">{userProfile?.posts?.length || 0}</span>
                 <p className="text-sm text-gray-600 dark:text-gray-400">Posts</p>
               </div>
-              <div className="flex flex-col items-center md:items-start flex-1 min-w-0">
+              <div className="flex flex-col items-start flex-1 min-w-0">
                 <span className="font-bold text-lg dark:text-white">{userProfile?.followers?.length || 0}</span>
                 <p className="text-sm text-gray-600 dark:text-gray-400">Followers</p>
               </div>
-              <div className="flex flex-col items-center md:items-start flex-1 min-w-0">
+              <div className="flex flex-col items-start flex-1 min-w-0">
                 <span className="font-bold text-lg dark:text-white">{userProfile?.following?.length || 0}</span>
                 <p className="text-sm text-gray-600 dark:text-gray-400">Following</p>
               </div>
@@ -163,11 +157,9 @@ function Profile() {
         </div>
       </div>
 
-      {/* Divider */}
       <div className="border-t border-gray-200 dark:border-gray-700 my-6 mx-6"></div>
 
-      {/* Profile Content */}
-      <Tabs defaultValue="posts" className="w-full">
+      <Tabs defaultValue="posts" className="w-full px-4">
         <TabsList className="grid w-full grid-cols-3 max-w-md mx-auto bg-gray-100 dark:bg-gray-800 p-1 rounded-lg">
           <TabsTrigger
             value="posts"
@@ -203,9 +195,9 @@ function Profile() {
             </div>
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="posts" className="mt-8 px-6">
+        <TabsContent value="posts" className="mt-8 ">
           {userPosts?.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-1">
+            <div className="grid grid-cols-3 gap-1">
               {userPosts.map((post) => (
                 <div key={post?._id} onClick={() => {
                   dispatch(setSelectedPost(post));
@@ -217,13 +209,7 @@ function Profile() {
                     alt="Post"
                   />
 
-                  {/* Gradient overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-
-                  {/* Caption - appears at top on hover */}
-
-
-                  {/* Stats panel that slides up */}
                   <div className="absolute bottom-0 left-0 right-0 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500 bg-gradient-to-t from-gray-900/90 via-gray-900/60 to-transparent p-4">
                     {post?.caption && (
                       <p className="text-white text-sm font-medium flex h-6">{post?.caption}</p>
@@ -243,7 +229,6 @@ function Profile() {
                     </div>
                   </div>
 
-                  {/* Subtle shine effect on hover */}
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
                     <div className="absolute top-0 left-0 right-0 h-1/3 bg-gradient-to-b from-white/10 to-transparent"></div>
                   </div>
@@ -261,10 +246,10 @@ function Profile() {
           )}
         </TabsContent>
 
-        <TabsContent value="saved" className="mt-8 px-6">
+        <TabsContent value="saved" className="mt-8 ">
           {bookmarkedPosts ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-1">
-              {bookmarkedPosts.map((post) => (
+            <div className="grid grid-cols-3 gap-1">
+              {bookmarkedPosts.slice().reverse().map((post) => (
                 <div key={post?._id} className=" bg-gray-100 dark:bg-gray-700 overflow-hidden relative group">
                   <img
                     src={post?.image}
@@ -272,13 +257,7 @@ function Profile() {
                     alt="Post"
                   />
 
-                  {/* Gradient overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-
-                  {/* Caption - appears at top on hover */}
-
-
-                  {/* Stats panel that slides up */}
                   <div className="absolute bottom-0 left-0 right-0 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500 bg-gradient-to-t from-gray-900/90 via-gray-900/60 to-transparent p-4">
                     {post?.caption && (
                       <p className="text-white text-sm font-medium flex h-6">{post?.caption}</p>
@@ -298,7 +277,6 @@ function Profile() {
                     </div>
                   </div>
 
-                  {/* Subtle shine effect on hover */}
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
                     <div className="absolute top-0 left-0 right-0 h-1/3 bg-gradient-to-b from-white/10 to-transparent"></div>
                   </div>

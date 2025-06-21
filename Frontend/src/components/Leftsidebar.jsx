@@ -3,12 +3,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuthUser } from '@/redux/authSlice';
 import CreatePost from './CreatePost.jsx';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { Button } from './ui/button';
+import { removeOnlineUser, setOnlineUsers } from '@/redux/chatSlice.js';
 
 function Leftsidebar() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
@@ -19,8 +20,9 @@ function Leftsidebar() {
   const [open, setOpen] = useState(false);
   const { likeNotifications } = useSelector(store => store.notification);
   const FilteredLikeNotifications = [];
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
 
-  // Mobile tabs configuration
   const mobileTabs = [
     { icon: <Home className="w-6 h-6" />, text: "Home" },
     { icon: <Search className="w-6 h-6" />, text: "Search" },
@@ -54,16 +56,17 @@ function Leftsidebar() {
     try {
       const res = await axios.get(`https://eclipse0.onrender.com/api/v2/user/logout`, { withCredentials: true });
       if (res.data.success) {
+        dispatch(removeOnlineUser(user._id));
         dispatch(setAuthUser(null));
         navigate('/login');
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Logout failed'); 
+      toast.error(error.response?.data?.message || 'Logout failed');
     }
   };
 
   const sidebarHandler = (textType) => {
-    switch(textType) {
+    switch (textType) {
       case 'Log out': logoutHandler(); break;
       case 'Create Post': setOpen(true); break;
       case 'Home': navigate('/'); break;
@@ -79,7 +82,7 @@ function Leftsidebar() {
       <div className="hidden md:flex fixed inset-y-0 left-0 z-30 flex-col h-screen p-4 w-64 border-r bg-gray-900">
         <div className='flex justify-center mb-8'>
           <Link to={'/'}>
-            <img src="https://i.ibb.co/8gYfpmgP/logo.png" alt="logo" className='w-32'/>
+            <img src="https://i.ibb.co/8gYfpmgP/logo.png" alt="logo" className='w-32' />
           </Link>
         </div>
 
@@ -108,27 +111,29 @@ function Leftsidebar() {
             </div>
           ))}
         </div>
-        <CreatePost open={open} setOpen={setOpen}/>
+        <CreatePost open={open} setOpen={setOpen} />
       </div>
 
       {/* Mobile Top Navbar (Logo only) */}
-      <nav className='fixed md:hidden flex items-center justify-between h-16 top-0 left-0 right-0 z-50 bg-gray-900 border-b p-5'>
-        <Link to={'/'}>
-          <img 
-            src="https://i.ibb.co/8gYfpmgP/logo.png" 
-            alt="logo" 
-            className='w-32 h-auto'
-          />
-        </Link>
-        <button
-            
+      {isHomePage && (
+        <nav className='fixed md:hidden flex items-center justify-between h-16 top-0 left-0 right-0 z-50 bg-gray-900 border-b p-5'>
+          <Link to={'/'}>
+            <img
+              src="https://i.ibb.co/8gYfpmgP/logo.png"
+              alt="logo"
+              className='w-32 h-auto'
+            />
+          </Link>
+          <button
+
             className="p-3 cursor-pointer"
             onClick={() => sidebarHandler('Messages')}
           >
-           <MessageSquareMore className="w-6 h-6"  /> 
-           
+            <MessageSquareMore className="w-6 h-6" />
+
           </button>
-      </nav>
+        </nav>
+      )}
 
       {/* Mobile Bottom Navigation */}
       <div className='fixed md:hidden flex items-center justify-around h-16 bottom-0 left-0 right-0 z-50 bg-gray-900 border-t'>
@@ -145,7 +150,7 @@ function Leftsidebar() {
 
       {/* Mobile Sidebar (hidden by default) */}
       <div className={`md:hidden fixed inset-y-0 left-0 z-[60] flex flex-col h-screen p-4 w-64 bg-background transform transition-transform ${isMobileOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-        <button 
+        <button
           onClick={toggleMobileSidebar}
           className="absolute top-5 left-4 p-1 rounded-md"
         >
@@ -153,7 +158,7 @@ function Leftsidebar() {
         </button>
 
         <div className='flex justify-center mb-8 mt-2'>
-          <img src="https://i.ibb.co/8gYfpmgP/logo.png" alt="logo" className='w-32'/>
+          <img src="https://i.ibb.co/8gYfpmgP/logo.png" alt="logo" className='w-32' />
         </div>
 
         <div className="space-y-2">

@@ -12,7 +12,6 @@ const SuggestedUsers = () => {
   const { userProfile } = useSelector(store => store.auth);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
-  // Remove the single isFollowing state
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -36,7 +35,6 @@ const SuggestedUsers = () => {
       );
       
       if (response.data.success) {
-        // Update logged-in user's following list
         const updatedUser = { ...user };
         const isCurrentlyFollowing = updatedUser.following.includes(suserId);
         
@@ -48,7 +46,6 @@ const SuggestedUsers = () => {
         
         dispatch(setAuthUser(updatedUser));
 
-        // Update the suggested users list
         const updatedSuggestedUsers = suggestedUser.map(user => {
           if (user._id === suserId) {
             return {
@@ -61,7 +58,6 @@ const SuggestedUsers = () => {
           return user;
         });
 
-        // If we're viewing a profile, update that as well
         if (userProfile && userProfile._id === suserId) {
           const updatedProfile = {
             ...userProfile,
@@ -123,7 +119,7 @@ const SuggestedUsers = () => {
               onClick={() => handleFollow(suser?._id)} 
               className='text-blue-600 top-0 px-2 mt-0 text-xs font-semibold cursor-pointer'
             >
-              {user?.following.includes(suser?._id) ? 'Following' : 'Follow'}
+              {user?.following?.includes(suser?._id) ? 'Following' : 'Follow'}
             </button>
           </div>
         ))

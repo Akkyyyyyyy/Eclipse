@@ -9,7 +9,6 @@ export const sendMessage = async (req, res) => {
         const { text: message } = req.body;
         console.log(message);
         
-        // Find or create conversation
         let conversation = await Conversation.findOne({
             participants: { $all: [senderId, receiverId] }
         });
@@ -21,14 +20,12 @@ export const sendMessage = async (req, res) => {
             });
         }
 
-        // Create new message
         const newMessage = await Message.create({
             senderId,
             receiverId,
             message
         });
 
-        // Add message to conversation
         if (newMessage) {
             conversation.messages.push(newMessage._id);
             await conversation.save();
@@ -58,7 +55,6 @@ export const getMessage = async (req, res) => {
         const senderId = req.id;
         const receiverId = req.params.id;
 
-        // Find conversation with messages populated
         const conversation = await Conversation.findOne({
             participants: { $all: [senderId, receiverId] }
         }).populate('messages');

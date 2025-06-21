@@ -7,7 +7,7 @@ import useGetSuggestedUser from '@/hooks/useGetSuggestedUser'
 
 function Home() {
   useGetAllPost();
-  useGetSuggestedUser();  
+  useGetSuggestedUser();
   return (
     <div className='flex'>
       <div className='flex-grow'>
