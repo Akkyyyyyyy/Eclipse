@@ -183,7 +183,7 @@ function Profile() {
               Saved
             </div>
           </TabsTrigger>
-          <TabsTrigger
+          {/* <TabsTrigger
             value="tagged"
             className="data-[state=active]:bg-white data-[state=active]:shadow-sm dark:data-[state=active]:bg-gray-700 py-2 rounded-md transition-all"
           >
@@ -193,7 +193,7 @@ function Profile() {
               </svg>
               Tagged
             </div>
-          </TabsTrigger>
+          </TabsTrigger> */}
         </TabsList>
         <TabsContent value="posts" className="mt-8 ">
           {userPosts?.length > 0 ? (
@@ -293,7 +293,7 @@ function Profile() {
             </div>
           )}
         </TabsContent>
-
+{/* 
         <TabsContent value="tagged" className="mt-8 px-6">
           <div className="py-2 text-center">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -302,7 +302,7 @@ function Profile() {
             <h3 className="mt-4 text-lg font-medium text-gray-600 dark:text-gray-400">No tagged photos</h3>
             <p className="mt-2 text-gray-500 dark:text-gray-500">When people tag you in photos, they'll appear here</p>
           </div>
-        </TabsContent>
+        </TabsContent> */}
       </Tabs>
       <CommentDialog open={open} setOpen={setOpen} />
     </div>

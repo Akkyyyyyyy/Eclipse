@@ -25,7 +25,7 @@ function Leftsidebar() {
 
   const mobileTabs = [
     { icon: <Home className="w-6 h-6" />, text: "Home" },
-    { icon: <Search className="w-6 h-6" />, text: "Search" },
+    // { icon: <Search className="w-6 h-6" />, text: "Search" },
     { icon: <SquarePlus className="w-6 h-6" />, text: "Create Post" },
     { icon: <Bell className="w-6 h-6" />, text: "Notifications" },
     {
